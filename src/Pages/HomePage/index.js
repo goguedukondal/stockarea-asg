@@ -32,7 +32,7 @@ function WarehouseList() {
         });
     }
     // eslint-disable-next-line
-  }, [dispatch, memoizedStoreWarehouses]);
+  }, [dispatch]);
 
   return (
     <div className="main-container">
