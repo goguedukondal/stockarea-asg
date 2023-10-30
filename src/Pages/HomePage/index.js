@@ -1,20 +1,19 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import './index.css';
 
 function WarehouseList() {
   const [searchTerm, setSearchTerm] = useState('');
+
   const [filters, setFilters] = useState({ city: '', cluster: '', spaceAvailable: '' });
   const navigate = useNavigate();
 
   const storeWarehouses = useSelector((reduxStoreData) => reduxStoreData.warehouselist.data) || [];
   const dispatch = useDispatch();
 
-  // Use useMemo to memoize storeWarehouses
-  const memoizedStoreWarehouses = useMemo(() => storeWarehouses, [storeWarehouses]);
 
-  const filteredWarehouses = memoizedStoreWarehouses.filter((warehouse) => {
+  const filteredWarehouses = storeWarehouses.filter((warehouse) => {
     const nameMatch = warehouse.name.toLowerCase().includes(searchTerm.toLowerCase());
     const cityMatch = filters.city === '' || warehouse.city === filters.city;
     const clusterMatch = filters.cluster === '' || warehouse.cluster === filters.cluster;
@@ -25,7 +24,7 @@ function WarehouseList() {
   });
 
   useEffect(() => {
-    if (memoizedStoreWarehouses.length === 0) {
+    if (storeWarehouses.length === 0) {
       fetch('http://localhost:3001/houses')
         .then((response) => response.json())
         .then((data) => {
